@@ -29,15 +29,21 @@ def onoff(client, message):
         storage['enabled'] = False;
         message.reply_text('Bot disabled');
     elif message.text == 'bot.status':
-        message.reply_text('I\'m ok!');
+        message.reply_text('enabled' if storage.enabled else 'disabled');
+    elif message.text.startswith('bot.cooldown'):
+        storage.cooldown = int(message.text.split[' '][1]);
+        message.reply('Ok, now cooldown time: {} seconds '.format(storage.cooldown));
+    elif message.text.startswith('bot.message'):
+        storage.message = message.text.split(' ', 1)[1];
+        message.reply('Ok, message:');
+        message.reply(storage.message);
 
 @app.on_message(Filters.text)
 def autoReply(client, message):
     if not storage['enabled']:
         return;
-    if (message.chat.id not in chat_timers) or (message.date - chat_timers[message.chat.id] > COOLDOWN):
+    if (message.chat.id not in chat_timers) or (message.date - chat_timers[message.chat.id] > storage.cooldown):
         chat_timers[message.chat.id] = message.date;
-        message.reply_text(TEXT);
-        # message.reply_photo('./1.png');
+        message.reply_text(storage.message);
 
 app.run();
