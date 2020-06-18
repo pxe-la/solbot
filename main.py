@@ -34,7 +34,7 @@ def onoff(client, message):
         storage['cooldown'] = int(message.text.split(' ')[1]);
         message.reply('Ok, now cooldown time: {} seconds '.format(storage['cooldown']));
     elif message.text.startswith('bot.message'):
-        storage['message'] = message.text.split(' ', 1)[1];
+        storage['message'] = message.text.markdown.split(' ', 1)[1];
         message.reply('Ok, message:');
         message.reply(storage['message']);
 
